@@ -6,29 +6,21 @@ import 'package:provider/provider.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/global_ui_viewmodel.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+class ForgetPasswordScreen extends StatefulWidget {
+  const ForgetPasswordScreen({Key? key}) : super(key: key);
 
   @override
-  _LoginScreenState createState() => _LoginScreenState();
+  _ForgetPasswordScreenState createState() => _ForgetPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-
-  bool _obscureTextPassword = true;
-
-  final _formKey = GlobalKey<FormState>();
-
-  void login() async {
-    if (_formKey.currentState == null || !_formKey.currentState!.validate()) {
-      return;
-    }
+class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  void resetPassword() async {
     _ui.loadState(true);
     try {
-      _auth.login(_emailController.text, _passwordController.text).then((value) {
-        Navigator.of(context).pushReplacementNamed('/dashboard');
+      _auth.resetPassword(_emailController.text).then((value) {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password reset link has been sent to your email.")));
+        Navigator.of(context).pop();
       }).catchError((e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message.toString())));
       });
@@ -50,12 +42,11 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Form(
-      key: _formKey,
       child: Scaffold(
         body: Center(
           child: SingleChildScrollView(
             child: Container(
-              padding: EdgeInsets.all(20),
+              padding: const EdgeInsets.all(20),
               child: Column(
                 children: [
                   Image.asset(
@@ -63,77 +54,30 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 100,
                     width: 100,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
                   TextFormField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
-                    validator: ValidateLogin.emailValidate,
                     style: const TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 16.0, color: Colors.black),
                     decoration: InputDecoration(
                       enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
                       focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
                       border: InputBorder.none,
-                      prefixIcon: Icon(
+                      prefixIcon: const Icon(
                         Icons.email,
                         color: Colors.black,
                         size: 22.0,
                       ),
                       hintText: 'Email Address',
-                      hintStyle: TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    obscureText: _obscureTextPassword,
-                    validator: ValidateLogin.password,
-                    style: const TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 16.0, color: Colors.black),
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                      focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(20)),
-                      prefixIcon: const Icon(
-                        Icons.lock,
-                        size: 22.0,
-                        color: Colors.black,
-                      ),
-                      hintText: 'Password',
                       hintStyle: const TextStyle(fontFamily: 'WorkSansSemiBold', fontSize: 17.0),
-                      suffixIcon: GestureDetector(
-                        onTap: () {
-                          setState(() {
-                            _obscureTextPassword = !_obscureTextPassword;
-                          });
-                        },
-                        child: Icon(
-                          _obscureTextPassword ? Icons.visibility : Icons.visibility_off,
-                          size: 20.0,
-                          color: Colors.black,
-                        ),
-                      ),
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 10,
                   ),
-                  Align(
-                      alignment: Alignment.centerRight,
-                      child: InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed("/forget-password");
-                        },
-                        child: Text(
-                          "Forgot password?",
-                          style: TextStyle(color: Colors.grey.shade800),
-                        ),
-                      )),
                   SizedBox(
-                    height: 10,
-                  ),
-                  Container(
                     width: double.infinity,
                     child: ElevatedButton(
                         style: ButtonStyle(
@@ -141,10 +85,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.symmetric(vertical: 20)),
                         ),
                         onPressed: () {
-                          login();
+                          resetPassword();
                         },
                         child: Text(
-                          "Log In",
+                          "Reset Password",
                           style: TextStyle(fontSize: 20),
                         )),
                   ),
@@ -155,15 +99,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Are you new? Create an account ",
+                        "Already know the password? ",
                         style: TextStyle(color: Colors.grey.shade800),
                       ),
                       InkWell(
                           onTap: () {
-                            Navigator.of(context).pushNamed("/register");
+                            Navigator.of(context).pop();
                           },
                           child: Text(
-                            "Sign up",
+                            "Sign In",
                             style: TextStyle(color: Colors.blue),
                           ))
                     ],
@@ -175,22 +119,5 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-}
-
-class ValidateLogin {
-  static String? emailValidate(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Email is required";
-    }
-
-    return null;
-  }
-
-  static String? password(String? value) {
-    if (value == null || value.isEmpty) {
-      return "Password is required";
-    }
-    return null;
   }
 }

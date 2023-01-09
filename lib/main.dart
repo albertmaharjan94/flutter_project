@@ -1,9 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:loader_overlay/loader_overlay.dart';
+import 'package:n_baz/screens/auth/forget_password_screen.dart';
 import 'package:n_baz/screens/auth/login_screen.dart';
 import 'package:n_baz/screens/auth/register_screen.dart';
-import 'package:n_baz/screens/auth/splash_screen.dart';
+import 'package:n_baz/screens/splash_screen.dart';
 import 'package:n_baz/screens/home/dashboard.dart';
 import 'package:n_baz/viewmodels/auth_viewmodel.dart';
 import 'package:n_baz/viewmodels/global_ui_viewmodel.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
       child: GlobalLoaderOverlay(
         useDefaultLoading: false,
         overlayWidget: Center(
-          child: Image.asset("images/loader.gif", height: 100, width: 100,),
+          child: Image.asset("assets/images/loader.gif", height: 100, width: 100,),
         ),
         child: Consumer<GlobalUIViewModel>(
           builder: (context, loader, child) {
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
                 "/login": (BuildContext context)=>LoginScreen(),
                 "/splash": (BuildContext context)=>SplashScreen(),
                 "/register": (BuildContext context)=>RegisterScreen(),
+                "/forget-password": (BuildContext context)=>ForgetPasswordScreen(),
                 "/dashboard": (BuildContext context)=>DashboardScreen(),
               },
             );

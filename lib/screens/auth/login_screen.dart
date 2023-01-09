@@ -27,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     _ui.loadState(true);
     try {
-      _auth.login(_emailController.text, _passwordController.text).then((value) {
+      await _auth.login(_emailController.text, _passwordController.text).then((value) {
         Navigator.of(context).pushReplacementNamed('/dashboard');
       }).catchError((e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message.toString())));

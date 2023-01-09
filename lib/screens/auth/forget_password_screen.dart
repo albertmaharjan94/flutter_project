@@ -18,7 +18,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   void resetPassword() async {
     _ui.loadState(true);
     try {
-      _auth.resetPassword(_emailController.text).then((value) {
+      await _auth.resetPassword(_emailController.text).then((value) {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Password reset link has been sent to your email.")));
         Navigator.of(context).pop();
       }).catchError((e) {

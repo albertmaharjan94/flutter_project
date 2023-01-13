@@ -16,17 +16,18 @@ class AuthRepository{
     try {
       final response = await userRef
           .where("username", isEqualTo: user.username!).get();
-      if (response.size != 0)
+      if (response.size != 0) {
         throw Exception("Username already exists");
-      UserCredential _uc = await FirebaseService.firebaseAuth
+      }
+      UserCredential uc = await FirebaseService.firebaseAuth
           .createUserWithEmailAndPassword(
           email: user.email!, password: user.password!);
 
-      user.id = _uc.user!.uid;
+      user.userId = uc.user!.uid;
       user.fcm = "";
       // insert into firestore user table
-      await FirebaseService.db.collection('users').add(user.toJson());
-      return _uc;
+      await userRef.add(user);
+      return uc;
     } catch (err) {
       rethrow;
     }
@@ -35,9 +36,9 @@ class AuthRepository{
 
   Future<UserCredential> login(String email, String password) async {
     try {
-      UserCredential _uc = await FirebaseService.firebaseAuth
+      UserCredential uc = await FirebaseService.firebaseAuth
           .signInWithEmailAndPassword(email: email, password: password);
-           return _uc;
+           return uc;
     } catch (err) {
       rethrow;
     }
@@ -46,7 +47,7 @@ class AuthRepository{
   Future<UserModel> getUserDetail(String id) async {
     try {
       final response = await userRef
-          .where("id", isEqualTo: id).get();
+          .where("user_id", isEqualTo: id).get();
 
       var user = response.docs.single.data();
       user.fcm="";

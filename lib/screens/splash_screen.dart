@@ -15,6 +15,8 @@ class _SplashScreenState extends State<SplashScreen> {
 
   void checkLogin() async{
     await Future.delayed(Duration(seconds: 2));
+    // check for user detail first
+    await _authViewModel.checkLogin();
     if(_authViewModel.user==null){
       Navigator.of(context).pushReplacementNamed("/login");
     }else{

@@ -49,6 +49,18 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
+
+  Future<void> checkLogin() async {
+    try {
+      _loggedInUser = await AuthRepository().getUserDetail(_user!.uid);
+      notifyListeners();
+    } catch (err) {
+      _user = null;
+      AuthRepository().logout();
+      rethrow;
+    }
+  }
+
   Future<void> logout() async{
     try{
       await AuthRepository().logout();

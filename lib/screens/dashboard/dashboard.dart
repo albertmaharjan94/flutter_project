@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:n_baz/screens/account/account_screen.dart';
+import 'package:n_baz/screens/home/home_screen.dart';
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
@@ -36,7 +37,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: SafeArea(
         child: PageView(
           controller: pageController,
-          children: <Widget>[Container(), Container(), AccountScreen()],
+          children: <Widget>[HomeScreen(), Container(), AccountScreen()],
           onPageChanged: _onPageChanged,
           physics: const NeverScrollableScrollPhysics(),
         ),
@@ -54,7 +55,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         items: [
           BottomNavigationBarItem(
               icon: Icon(Icons.home),
-              label:"Dashboard"
+              label:"Home"
           ),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite),

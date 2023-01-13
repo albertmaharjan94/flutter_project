@@ -4,8 +4,9 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:n_baz/screens/auth/forget_password_screen.dart';
 import 'package:n_baz/screens/auth/login_screen.dart';
 import 'package:n_baz/screens/auth/register_screen.dart';
+import 'package:n_baz/screens/dashboard/dashboard.dart';
 import 'package:n_baz/screens/splash_screen.dart';
-import 'package:n_baz/screens/home/dashboard.dart';
+import 'package:n_baz/services/local_notification_service.dart';
 import 'package:n_baz/viewmodels/auth_viewmodel.dart';
 import 'package:n_baz/viewmodels/global_ui_viewmodel.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ void main() async {
       projectId: "my-app-name-3d643",
     ),
   );
+  NotificationService.initialize();
   runApp(MyApp());
 }
 

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:n_baz/viewmodels/auth_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../services/local_notification_service.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -20,6 +22,10 @@ class _SplashScreenState extends State<SplashScreen> {
     if(_authViewModel.user==null){
       Navigator.of(context).pushReplacementNamed("/login");
     }else{
+      NotificationService.display(
+        title: "Welcome back",
+        body: "Hello ${_authViewModel.loggedInUser?.name},\n We have been waiting for you.",
+      );
       Navigator.of(context).pushReplacementNamed("/dashboard");
     }
   }
@@ -36,7 +42,7 @@ class _SplashScreenState extends State<SplashScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Image.asset("images/splash.gif"),
+              Image.asset("assets/images/splash.gif"),
               SizedBox(height: 100,),
               Text("Bazz", style: TextStyle(
                 fontSize: 22

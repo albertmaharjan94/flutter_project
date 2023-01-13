@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../services/local_notification_service.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/global_ui_viewmodel.dart';
 
@@ -27,7 +28,12 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     _ui.loadState(true);
     try {
-      await _auth.login(_emailController.text, _passwordController.text).then((value) {
+      await _authViewModel.login(_emailController.text, _passwordController.text).then((value) {
+
+        NotificationService.display(
+          title: "Welcome back",
+          body: "Hello ${_authViewModel.loggedInUser?.name},\n Hope you are having a wonderful day.",
+        );
         Navigator.of(context).pushReplacementNamed('/dashboard');
       }).catchError((e) {
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(e.message.toString())));
@@ -39,11 +45,11 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   late GlobalUIViewModel _ui;
-  late AuthViewModel _auth;
+  late AuthViewModel _authViewModel;
   @override
   void initState() {
     _ui = Provider.of<GlobalUIViewModel>(context, listen: false);
-    _auth = Provider.of<AuthViewModel>(context, listen: false);
+    _authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     super.initState();
   }
 

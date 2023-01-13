@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:n_baz/models/user_model.dart';
 import 'package:provider/provider.dart';
 
+import '../../services/local_notification_service.dart';
 import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/global_ui_viewmodel.dart';
 
@@ -26,12 +27,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscureTextPasswordConfirm = true;
 
   late GlobalUIViewModel _ui;
-  late AuthViewModel _auth;
+  late AuthViewModel _authViewModel;
 
   @override
   void initState() {
     _ui = Provider.of<GlobalUIViewModel>(context, listen: false);
-    _auth = Provider.of<AuthViewModel>(context, listen: false);
+    _authViewModel = Provider.of<AuthViewModel>(context, listen: false);
     super.initState();
   }
 
@@ -42,7 +43,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
     _ui.loadState(true);
     try{
-      await _auth.register(
+      await _authViewModel.register(
           UserModel(
               email: _emailController.text,
               password: _passwordController.text,
@@ -50,6 +51,11 @@ class _RegisterScreenState extends State<RegisterScreen> {
             username: _usernameController.text,
             name: _nameController.text
           )).then((value) {
+
+            NotificationService.display(
+              title: "Welcome to this app",
+              body: "Hello ${_authViewModel.loggedInUser?.name},\n Thank you for registering in this application.",
+            );
             Navigator.of(context).pushReplacementNamed("/dashboard");
       })
           .catchError((e){

@@ -18,16 +18,21 @@ class _SplashScreenState extends State<SplashScreen> {
   void checkLogin() async{
     await Future.delayed(Duration(seconds: 2));
     // check for user detail first
-    await _authViewModel.checkLogin();
-    if(_authViewModel.user==null){
+    try{
+      await _authViewModel.checkLogin();
+      if(_authViewModel.user==null){
+        Navigator.of(context).pushReplacementNamed("/login");
+      }else{
+        NotificationService.display(
+          title: "Welcome back",
+          body: "Hello ${_authViewModel.loggedInUser?.name},\n We have been waiting for you.",
+        );
+        Navigator.of(context).pushReplacementNamed("/dashboard");
+      }
+    }catch(e){
       Navigator.of(context).pushReplacementNamed("/login");
-    }else{
-      NotificationService.display(
-        title: "Welcome back",
-        body: "Hello ${_authViewModel.loggedInUser?.name},\n We have been waiting for you.",
-      );
-      Navigator.of(context).pushReplacementNamed("/dashboard");
     }
+
   }
   @override
   void initState() {

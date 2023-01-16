@@ -52,7 +52,6 @@ class AuthRepository{
       var user = response.docs.single.data();
       user.fcm="";
       await userRef.doc(user.id).set(user);
-
       return user;
     } catch (err) {
       rethrow;

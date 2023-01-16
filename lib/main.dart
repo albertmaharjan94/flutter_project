@@ -5,9 +5,11 @@ import 'package:n_baz/screens/auth/forget_password_screen.dart';
 import 'package:n_baz/screens/auth/login_screen.dart';
 import 'package:n_baz/screens/auth/register_screen.dart';
 import 'package:n_baz/screens/dashboard/dashboard.dart';
+import 'package:n_baz/screens/product/add_product_screen.dart';
 import 'package:n_baz/screens/splash_screen.dart';
 import 'package:n_baz/services/local_notification_service.dart';
 import 'package:n_baz/viewmodels/auth_viewmodel.dart';
+import 'package:n_baz/viewmodels/category_viewmodel.dart';
 import 'package:n_baz/viewmodels/global_ui_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +37,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider (create: (_) => GlobalUIViewModel()),
         ChangeNotifierProvider (create: (_) => AuthViewModel()),
+        ChangeNotifierProvider (create: (_) => CategoryViewModel()),
       ],
       child: GlobalLoaderOverlay(
         useDefaultLoading: false,
@@ -69,6 +72,7 @@ class MyApp extends StatelessWidget {
                 "/register": (BuildContext context)=>RegisterScreen(),
                 "/forget-password": (BuildContext context)=>ForgetPasswordScreen(),
                 "/dashboard": (BuildContext context)=>DashboardScreen(),
+                "/add-product": (BuildContext context)=>AddProductScreen(),
               },
             );
           }

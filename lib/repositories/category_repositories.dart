@@ -15,9 +15,9 @@ class CategoryRepository{
   );
     Future<List<QueryDocumentSnapshot<CategoryModel>>> getCategories() async {
     try {
-      bool hasData = await categoryRef.snapshots().length > 0;
+      var data = await categoryRef.get();
+      bool hasData = data.docs.isNotEmpty;
       if(!hasData){
-        print(makeCategory());
         makeCategory().forEach((element) async {
           await categoryRef.add(element);
         });
@@ -26,6 +26,7 @@ class CategoryRepository{
       var category = response.docs;
       return category;
     } catch (err) {
+      print(err);
       rethrow;
     }
   }

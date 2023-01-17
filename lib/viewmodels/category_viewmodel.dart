@@ -14,12 +14,14 @@ class CategoryViewModel with ChangeNotifier {
   List<CategoryModel> _categories = [];
   List<CategoryModel> get categories => _categories;
   Future<void> getCategories() async{
+    _categories=[];
     try{
       var response = await _categoryRepository.getCategories();
       for (var element in response) {
+
+        print(element.id);
         _categories.add(element.data());
       }
-      print(_categories);
       notifyListeners();
     }catch(e){
       print(e);

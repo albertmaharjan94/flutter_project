@@ -25,6 +25,18 @@ class ProductRepository{
       rethrow;
     }
   }
+  Future<DocumentSnapshot<ProductModel>> getOneProduct(String id) async {
+    try {
+      final response = await productRef.doc(id).get();
+      if (!response.exists) {
+        throw Exception("Product doesnot exists");
+      }
+      return response;
+    } catch (err) {
+      print(err);
+      rethrow;
+    }
+  }
 
 
   Future<bool?> addProducts({required ProductModel product}) async {

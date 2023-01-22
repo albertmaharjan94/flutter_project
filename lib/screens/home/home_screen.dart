@@ -35,6 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> refresh() async {
     _categoryViewModel.getCategories();
     _productViewModel.getProducts();
+    _authViewModel.getMyProducts();
   }
 
   @override

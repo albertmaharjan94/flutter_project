@@ -31,6 +31,10 @@ class CategoryRepository{
     }
   }
 
+  getCategory(String categoryId) async {
+    final response = await categoryRef.doc(categoryId).get();
+  }
+
   List<CategoryModel> makeCategory(){
       return [
         CategoryModel(categoryName: "Mobile Phones and Accessories", status: "active", imageUrl: "https://reviews.com.np/uploads/article/top-10-phones-under-30k-in-nepal-2020/top-10-phones-under-30k-in-nepal-2020.jpeg"),
@@ -40,6 +44,7 @@ class CategoryRepository{
         CategoryModel(categoryName: "Music Instruments", status: "active", imageUrl: "https://img.texasmonthly.com/2013/04/ESSENTIALS_680X382.jpg"),
       ];
   }
+
 
 
 }

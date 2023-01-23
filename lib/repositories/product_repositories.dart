@@ -25,6 +25,19 @@ class ProductRepository{
       rethrow;
     }
   }
+
+
+  Future<List<QueryDocumentSnapshot<ProductModel>>> getProductByCategory(String id) async {
+    try {
+      final response = await productRef.where("category_id", isEqualTo: id.toString()).get();
+      var products = response.docs;
+      return products;
+    } catch (err) {
+      print(err);
+      rethrow;
+    }
+  }
+
   Future<DocumentSnapshot<ProductModel>> getOneProduct(String id) async {
     try {
       final response = await productRef.doc(id).get();
@@ -49,5 +62,15 @@ class ProductRepository{
     }
   }
 
+
+  Future<bool?> favorites({required ProductModel product}) async {
+    try {
+      final response = await productRef.add(product);
+      return true;
+    } catch (err) {
+      return false;
+      rethrow;
+    }
+  }
 
 }

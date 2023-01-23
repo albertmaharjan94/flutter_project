@@ -6,6 +6,8 @@ import 'package:n_baz/screens/auth/login_screen.dart';
 import 'package:n_baz/screens/auth/register_screen.dart';
 import 'package:n_baz/screens/dashboard/dashboard.dart';
 import 'package:n_baz/screens/product/add_product_screen.dart';
+import 'package:n_baz/screens/product/edit_product_screen.dart';
+import 'package:n_baz/screens/product/my_product_screen.dart';
 import 'package:n_baz/screens/product/single_product_screen.dart';
 import 'package:n_baz/screens/splash_screen.dart';
 import 'package:n_baz/services/local_notification_service.dart';
@@ -76,7 +78,9 @@ class MyApp extends StatelessWidget {
                 "/forget-password": (BuildContext context)=>ForgetPasswordScreen(),
                 "/dashboard": (BuildContext context)=>DashboardScreen(),
                 "/add-product": (BuildContext context)=>AddProductScreen(),
+                "/edit-product": (BuildContext context)=>EditProductScreen(),
                 "/single-product": (BuildContext context)=>SingleProductScreen(),
+                "/my-products": (BuildContext context)=>MyProductScreen(),
               },
             );
           }

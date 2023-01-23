@@ -8,6 +8,7 @@ import '../../viewmodels/auth_viewmodel.dart';
 import '../../viewmodels/category_viewmodel.dart';
 import '../../viewmodels/global_ui_viewmodel.dart';
 import '../../viewmodels/product_viewmodel.dart';
+import '../favorite/favorite_screen.dart';
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
@@ -52,8 +53,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void getInit() {
-    _categoryViewModel.getCategories();
-    _productViewModel.getProducts();
+    try{
+      _categoryViewModel.getCategories();
+      _productViewModel.getProducts();
+      _authViewModel.getFavoritesUser();
+      _authViewModel.getMyProducts();
+    }catch(e){
+      print(e);
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -62,7 +69,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: SafeArea(
         child: PageView(
           controller: pageController,
-          children: <Widget>[HomeScreen(), Container(), AccountScreen()],
+          children: <Widget>[HomeScreen(), FavoriteScreen(), AccountScreen()],
           onPageChanged: _onPageChanged,
           physics: const NeverScrollableScrollPhysics(),
         ),

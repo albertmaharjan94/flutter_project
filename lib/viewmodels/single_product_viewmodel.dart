@@ -14,7 +14,7 @@ import '../repositories/product_repositories.dart';
 class SingleProductViewModel with ChangeNotifier {
   ProductRepository _productRepository = ProductRepository();
   ProductModel? _product = ProductModel();
-  ProductModel? get products => _product;
+  ProductModel? get product => _product;
 
   Future<void> getProducts(String productId) async{
     _product=ProductModel();

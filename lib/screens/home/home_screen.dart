@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:n_baz/models/category_model.dart';
@@ -22,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late AuthViewModel _authViewModel;
   late CategoryViewModel _categoryViewModel;
   late ProductViewModel _productViewModel;
+
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -29,12 +32,15 @@ class _HomeScreenState extends State<HomeScreen> {
       _categoryViewModel = Provider.of<CategoryViewModel>(context, listen: false);
       _productViewModel = Provider.of<ProductViewModel>(context, listen: false);
     });
+    refresh();
     super.initState();
   }
+
 
   Future<void> refresh() async {
     _categoryViewModel.getCategories();
     _productViewModel.getProducts();
+    _authViewModel.getMyProducts();
   }
 
   @override
@@ -104,36 +110,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             HomeHeader(),
-            Align(
-                alignment: Alignment.bottomRight,
-                child: InkWell(
-                  onTap: () {
-                    Navigator.of(context).pushNamed("/add-product");
-                  },
-                  borderRadius: BorderRadius.circular(100),
-                  child: Container(
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(
-                          color: Colors.black26,
-                        ),
-                        color: Colors.white,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: 2,
-                            blurRadius: 7,
-                            offset: Offset(0, 3), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      padding: EdgeInsets.all(15),
-                      margin: EdgeInsets.all(10),
-                      child: Text(
-                        "Add",
-                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      )),
-                ))
           ],
         ),
       );
@@ -168,7 +144,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 Expanded(
                     child: Align(
                       alignment: Alignment.centerRight,
-                        child: Icon(Icons.search, size: 30,))),
+                        child: Container()
+                        // Icon(Icons.search, size: 30,)
+                    )),
               ],
             )));
   }

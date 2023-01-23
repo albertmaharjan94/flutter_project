@@ -33,7 +33,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
         productPrice: num.parse(_productPriceController.text.toString()),
         userId: _authViewModel.loggedInUser!.userId,
       );
-      await ProductRepository().addProducts(product: data);
+      await _authViewModel.addMyProduct(data);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Success")));
       Navigator.of(context).pop();
     }catch(e){

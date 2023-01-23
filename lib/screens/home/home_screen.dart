@@ -173,42 +173,48 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget CategoryCard(CategoryModel e) {
-    return Container(
-      width: 250,
-      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-      child: Card(
-        elevation: 5,
-        child: Stack(
-          children: [
-            ClipRRect(
-                borderRadius: BorderRadius.circular(5),
-                child: Image.network(
-                  e.imageUrl.toString(),
-                  height: 120,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                )),
-            Positioned.fill(
-              child: Align(
-                alignment: Alignment.bottomCenter,
-                child: Container(
+    return InkWell(
+      onTap: (){
+        Navigator.of(context).pushNamed("/single-category", arguments:e.id.toString());
+      },
+      child: Container(
+        width: 250,
+        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+        child: Card(
+          elevation: 5,
+          child: Stack(
+            children: [
+              ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: Image.network(
+                    e.imageUrl.toString(),
+                    height: 120,
                     width: double.infinity,
-                    decoration: BoxDecoration(color: Colors.white70),
-                    child: Text(
-                      e.categoryName.toString() + "\n",
+                    fit: BoxFit.cover,
+                  )),
+              Positioned.fill(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(color: Colors.white70),
+                      child: Text(
+                        e.categoryName.toString() + "\n",
 
-                      maxLines: 1,
-                    )),
+                        maxLines: 1,
+                      )),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
+
   Widget ProductCard(ProductModel e) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         // print(e.id);
         Navigator.of(context).pushNamed("/single-product", arguments: e.id);
       },
@@ -226,10 +232,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     width: double.infinity,
                     fit: BoxFit.cover,
                     errorBuilder: (BuildContext context, Object exception, StackTrace? stackTrace) {
-                      return Image.asset('assets/images/logo.png',
+                      return Image.asset(
+                        'assets/images/logo.png',
                         height: 300,
                         width: double.infinity,
-                        fit: BoxFit.cover,);
+                        fit: BoxFit.cover,
+                      );
                     },
                   )),
               Positioned.fill(
@@ -238,14 +246,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Container(
                       width: double.infinity,
                       padding: EdgeInsets.symmetric(vertical: 5),
-                      decoration: BoxDecoration(color: Colors.white70),
-                      child: Text(
-                        e.productName.toString(),
-                        style: TextStyle(
-                          fontSize: 20
-                        ),
-                        textAlign: TextAlign.center,
-                        maxLines: 2,
+                      decoration: BoxDecoration(color: Colors.white.withOpacity(0.8)),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            e.productName.toString(),
+                            style: TextStyle(fontSize: 20),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                          ),
+                          Text(
+                            "Rs. "+e.productPrice.toString(),
+                            style: TextStyle(fontSize: 15, color: Colors.green),
+                            textAlign: TextAlign.center,
+                            maxLines: 2,
+                          ),
+                        ],
                       )),
                 ),
               ),

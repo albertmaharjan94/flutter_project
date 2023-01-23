@@ -90,7 +90,7 @@ class _EditProductBodyState extends State<EditProductBody> {
 
       if (product != null) {
         _productNameController.text = product.productName ?? "";
-        _productPriceController.text = product.productPrice.toString() ?? "";
+        _productPriceController.text = product.productPrice==null ? "" : product.productPrice.toString();
         _productDescriptionController.text = product.productDescription ?? "";
         setState(() {
           selectedCategory = product.categoryId;

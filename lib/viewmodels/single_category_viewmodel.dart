@@ -24,9 +24,9 @@ class SingleCategoryViewModel with ChangeNotifier {
     _products=[];
     notifyListeners();
     try{
+      print(categoryId);
       var response = await _categoryRepository.getCategory(categoryId);
       _category = response.data();
-
       var productResponse = await _productRepository.getProductByCategory(categoryId);
       for (var element in productResponse) {
         _products.add(element.data());

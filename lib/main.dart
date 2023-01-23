@@ -4,6 +4,7 @@ import 'package:loader_overlay/loader_overlay.dart';
 import 'package:n_baz/screens/auth/forget_password_screen.dart';
 import 'package:n_baz/screens/auth/login_screen.dart';
 import 'package:n_baz/screens/auth/register_screen.dart';
+import 'package:n_baz/screens/category/single_category_screen.dart';
 import 'package:n_baz/screens/dashboard/dashboard.dart';
 import 'package:n_baz/screens/product/add_product_screen.dart';
 import 'package:n_baz/screens/product/edit_product_screen.dart';
@@ -80,6 +81,7 @@ class MyApp extends StatelessWidget {
                 "/add-product": (BuildContext context)=>AddProductScreen(),
                 "/edit-product": (BuildContext context)=>EditProductScreen(),
                 "/single-product": (BuildContext context)=>SingleProductScreen(),
+                "/single-category": (BuildContext context)=>SingleCategoryScreen(),
                 "/my-products": (BuildContext context)=>MyProductScreen(),
               },
             );

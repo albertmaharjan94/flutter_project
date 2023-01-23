@@ -56,7 +56,7 @@ class _MyProductScreenState extends State<MyProductScreen> {
             physics: AlwaysScrollableScrollPhysics(),
             child: Column(
               children: [
-                if (_authViewModel.myProduct != null && _authViewModel.myProduct!.isEmpty) Text("You can add your products here"),
+                if (_authViewModel.myProduct != null && _authViewModel.myProduct!.isEmpty) Center(child: Text("You can add your products here")),
                 if (_authViewModel.myProduct != null) ...authVM.myProduct!.map((e) => ProductWidgetList(context, e))
               ],
             ),

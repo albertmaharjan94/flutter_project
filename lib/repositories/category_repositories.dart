@@ -31,8 +31,14 @@ class CategoryRepository{
     }
   }
 
-  getCategory(String categoryId) async {
-    final response = await categoryRef.doc(categoryId).get();
+  Future<DocumentSnapshot<CategoryModel>>  getCategory(String categoryId) async {
+      try{
+        print(categoryId);
+        final response = await categoryRef.doc(categoryId).get();
+        return response;
+      }catch(e){
+        rethrow;
+      }
   }
 
   List<CategoryModel> makeCategory(){

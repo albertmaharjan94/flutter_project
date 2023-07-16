@@ -4,6 +4,7 @@ import 'package:n_baz/models/favorite_model.dart';
 import 'package:n_baz/viewmodels/auth_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import '../../repositories/cart_repositories.dart';
 import '../../viewmodels/global_ui_viewmodel.dart';
 import '../../viewmodels/single_product_viewmodel.dart';
 
@@ -37,8 +38,7 @@ class _SingleProductBodyState extends State<SingleProductBody> {
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _singleProductViewModel =
-          Provider.of<SingleProductViewModel>(context, listen: false);
+      _singleProductViewModel = Provider.of<SingleProductViewModel>(context, listen: false);
       _authViewModel = Provider.of<AuthViewModel>(context, listen: false);
       _ui = Provider.of<GlobalUIViewModel>(context, listen: false);
       final args = ModalRoute.of(context)!.settings.arguments.toString();
@@ -60,19 +60,20 @@ class _SingleProductBodyState extends State<SingleProductBody> {
     _ui.loadState(false);
   }
 
-  Future<void> favoritePressed(
-      FavoriteModel? isFavorite, String productId) async {
+  Future<void> favoritePressed(FavoriteModel? isFavorite, String productId) async {
     _ui.loadState(true);
     try {
       await _authViewModel.favoriteAction(isFavorite, productId);
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Favorite updated.")));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Something went wrong. Please try again.")));
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("Something went wrong. Please try again.")));
       print(e);
     }
     _ui.loadState(false);
   }
 
+  int quantity = 1;
   @override
   Widget build(BuildContext context) {
     return Consumer2<SingleProductViewModel, AuthViewModel>(
@@ -92,6 +93,89 @@ class _SingleProductBodyState extends State<SingleProductBody> {
                   ),
                 )
               : Scaffold(
+                  floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+                  floatingActionButton: Container(
+                    height: 70,
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border(
+                        top: BorderSide(width: 1, color: Colors.black12),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+
+                        Expanded(
+                            child:
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      if (quantity > 1) {
+                                        quantity -= 1;
+                                      }
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFE6F0F5),
+                                        borderRadius: BorderRadius.circular(50)),
+                                    padding: EdgeInsets.all(5),
+                                    child: Icon(
+                                      Icons.remove,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  child: Text(quantity.toString()),
+                                ),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    setState(() {
+                                      quantity += 1;
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: Color(0xFFE6F0F5),
+                                        borderRadius: BorderRadius.circular(50)),
+                                    padding: EdgeInsets.all(5),
+                                    child: Icon(
+                                      Icons.add,
+                                      size: 15,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
+                        ),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        Expanded(
+                          flex: 2,
+                            child: ElevatedButton(
+                          onPressed: () {
+                            CartRepository().addToCart(singleProductVM.product!, quantity).then((value) {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Cart updated")));
+                            });
+                          },
+                          child: Text("Add to cart"),
+                        )),
+                      ],
+                    ),
+                  ),
                   appBar: AppBar(
                     backgroundColor: Colors.black54,
                     actions: [
@@ -99,22 +183,17 @@ class _SingleProductBodyState extends State<SingleProductBody> {
                         FavoriteModel? isFavorite;
                         try {
                           isFavorite = authVm.favorites.firstWhere(
-                              (element) =>
-                                  element.productId ==
-                                  singleProductVM.product!.id);
+                              (element) => element.productId == singleProductVM.product!.id);
                         } catch (e) {}
 
                         return IconButton(
                             onPressed: () {
                               print(singleProductVM.product!.id!);
-                              favoritePressed(
-                                  isFavorite, singleProductVM.product!.id!);
+                              favoritePressed(isFavorite, singleProductVM.product!.id!);
                             },
                             icon: Icon(
                               Icons.favorite,
-                              color: isFavorite != null
-                                  ? Colors.red
-                                  : Colors.white,
+                              color: isFavorite != null ? Colors.red : Colors.white,
                             ));
                       })
                     ],
@@ -128,8 +207,8 @@ class _SingleProductBodyState extends State<SingleProductBody> {
                           height: 400,
                           width: double.infinity,
                           fit: BoxFit.cover,
-                          errorBuilder: (BuildContext context, Object exception,
-                              StackTrace? stackTrace) {
+                          errorBuilder:
+                              (BuildContext context, Object exception, StackTrace? stackTrace) {
                             return Image.asset(
                               'assets/images/logo.png',
                               height: 400,
@@ -143,16 +222,13 @@ class _SingleProductBodyState extends State<SingleProductBody> {
                         ),
                         Container(
                             width: double.infinity,
-                            padding: EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 20),
+                            padding: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                             decoration: BoxDecoration(color: Colors.white70),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  "Rs. " +
-                                      singleProductVM.product!.productPrice
-                                          .toString(),
+                                  "Rs. " + singleProductVM.product!.productPrice.toString(),
                                   style: TextStyle(
                                       fontSize: 30,
                                       color: Colors.green,
@@ -162,18 +238,14 @@ class _SingleProductBodyState extends State<SingleProductBody> {
                                   height: 10,
                                 ),
                                 Text(
-                                  singleProductVM.product!.productName
-                                      .toString(),
-                                  style: TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
+                                  singleProductVM.product!.productName.toString(),
+                                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                                 ),
                                 SizedBox(
                                   height: 10,
                                 ),
                                 Text(
-                                  singleProductVM.product!.productDescription
-                                      .toString(),
+                                  singleProductVM.product!.productDescription.toString(),
                                   style: TextStyle(
                                     fontSize: 22,
                                   ),

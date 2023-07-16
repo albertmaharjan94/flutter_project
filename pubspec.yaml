@@ -48,6 +48,7 @@ dependencies:
   loader_overlay: ^2.1.0
   flutter_local_notifications: ^13.0.0
   http: ^0.13.5
+  google_fonts: ^4.0.1
 
 dev_dependencies:
   flutter_test:

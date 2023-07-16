@@ -24,7 +24,7 @@ class AuthViewModel with ChangeNotifier {
     try {
       var response = await AuthRepository().login(email, password);
       _user = response.user;
-      _loggedInUser = await AuthRepository().getUserDetail(_user!.uid);
+      _loggedInUser = await AuthRepository().getUserDetail(_user!.uid, _token);
       notifyListeners();
     } catch (err) {
       AuthRepository().logout();
@@ -46,7 +46,7 @@ class AuthViewModel with ChangeNotifier {
     try {
       var response = await AuthRepository().register(user);
       _user = response!.user;
-      _loggedInUser = await AuthRepository().getUserDetail(_user!.uid);
+      _loggedInUser = await AuthRepository().getUserDetail(_user!.uid, _token);
       notifyListeners();
     } catch (err) {
       AuthRepository().logout();
@@ -54,10 +54,12 @@ class AuthViewModel with ChangeNotifier {
     }
   }
 
-
-  Future<void> checkLogin() async {
+  String? _token;
+  String? get token =>_token;
+  Future<void> checkLogin(String? token) async {
     try {
-      _loggedInUser = await AuthRepository().getUserDetail(_user!.uid);
+      _loggedInUser = await AuthRepository().getUserDetail(_user!.uid, token);
+      _token = token;
       notifyListeners();
     } catch (err) {
       _user = null;

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:n_baz/screens/auth/forget_password_screen.dart';
 import 'package:n_baz/screens/auth/login_screen.dart';
@@ -18,15 +19,14 @@ import 'package:n_baz/viewmodels/global_ui_viewmodel.dart';
 import 'package:n_baz/viewmodels/product_viewmodel.dart';
 import 'package:provider/provider.dart';
 
+import 'firebase_options.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
-    // options: FirebaseOptions(
-    //   apiKey: "AIzaSyDZopgwT3FXAHhsTs2c78yk-dw92lnnEK8",
-    //   appId: "1:350617005648:web:64921c07aa521069b4ab55",
-    //   messagingSenderId: "350617005648",
-    //   projectId: "my-app-name-3d643",
-    // ),
+
+    options: DefaultFirebaseOptions.currentPlatform,
+
   );
   NotificationService.initialize();
   runApp(MyApp());
@@ -59,6 +59,7 @@ class MyApp extends StatelessWidget {
             }
             return MaterialApp(
               title: 'Flutter Demo',
+              debugShowCheckedModeBanner: false,
               theme: ThemeData(
                 // This is the theme of your application.
                 //
@@ -69,7 +70,8 @@ class MyApp extends StatelessWidget {
                 // or simply save your changes to "hot reload" in a Flutter IDE).
                 // Notice that the counter didn't reset back to zero; the application
                 // is not restarted.
-                primarySwatch: Colors.blue,
+                primarySwatch: Colors.green,
+                textTheme: GoogleFonts.aBeeZeeTextTheme(),
               ),
               initialRoute: "/splash",
               routes: {

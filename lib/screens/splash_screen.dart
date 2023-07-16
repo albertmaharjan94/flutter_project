@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:n_baz/viewmodels/auth_viewmodel.dart';
@@ -16,10 +17,12 @@ class _SplashScreenState extends State<SplashScreen> {
   late AuthViewModel _authViewModel;
 
   void checkLogin() async{
+    String? token = await FirebaseMessaging.instance.getToken();
+
     await Future.delayed(Duration(seconds: 2));
     // check for user detail first
     try{
-      await _authViewModel.checkLogin();
+      await _authViewModel.checkLogin(token);
       if(_authViewModel.user==null){
         Navigator.of(context).pushReplacementNamed("/login");
       }else{

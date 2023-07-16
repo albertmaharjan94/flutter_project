@@ -31,8 +31,8 @@ class _HomeScreenState extends State<HomeScreen> {
       _authViewModel = Provider.of<AuthViewModel>(context, listen: false);
       _categoryViewModel = Provider.of<CategoryViewModel>(context, listen: false);
       _productViewModel = Provider.of<ProductViewModel>(context, listen: false);
+      refresh();
     });
-    refresh();
     super.initState();
   }
 

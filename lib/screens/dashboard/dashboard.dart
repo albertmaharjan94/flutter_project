@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:n_baz/screens/account/account_screen.dart';
+import 'package:n_baz/screens/cart/cart_screen.dart';
 import 'package:n_baz/screens/home/home_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -9,6 +11,7 @@ import '../../viewmodels/category_viewmodel.dart';
 import '../../viewmodels/global_ui_viewmodel.dart';
 import '../../viewmodels/product_viewmodel.dart';
 import '../favorite/favorite_screen.dart';
+
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);
 
@@ -17,14 +20,12 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-
   PageController pageController = PageController();
   int selectedIndex = 0;
   _onPageChanged(int index) {
     // onTap
     setState(() {
       selectedIndex = index;
-
     });
   }
 
@@ -34,7 +35,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
       this.selectedIndex = selectedIndex;
     });
   }
-
 
   late GlobalUIViewModel _ui;
   late AuthViewModel _authViewModel;
@@ -53,15 +53,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void getInit() {
-    try{
+    try {
       _categoryViewModel.getCategories();
       _productViewModel.getProducts();
       _authViewModel.getFavoritesUser();
       _authViewModel.getMyProducts();
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +70,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       body: SafeArea(
         child: PageView(
           controller: pageController,
-          children: <Widget>[HomeScreen(), FavoriteScreen(), AccountScreen()],
+          children: <Widget>[HomeScreen(), FavoriteScreen(), CartScreen(), AccountScreen()],
           onPageChanged: _onPageChanged,
           physics: const NeverScrollableScrollPhysics(),
         ),
@@ -85,21 +86,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
         type: BottomNavigationBarType.fixed,
         onTap: _itemTapped,
         items: [
-          BottomNavigationBarItem(
-              icon: Icon(Icons.home),
-              label:"Home"
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite),
-              label:"Favorite"
-          ),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.person),
-              label:"Account"
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: "Favorite"),
+          BottomNavigationBarItem(icon: Icon(Icons.shopping_cart), label: "Cart"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Account"),
         ],
       ),
     );
   }
-
 }
